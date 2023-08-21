@@ -25,16 +25,13 @@ function useEnterAnimation() {
     (enterAnimation: boolean): ThemableCssProp => {
       if (prefersReducedMotion) {
         return {
-          // opacity: 1,
           animation: 'none',
         };
       }
       return t => ({
-        // opacity: 0,
-        animation: `${enterAnimation ? animations.inAnimation : animations.outAnimation} ${
+        animation: `${enterAnimation ? animations.notificationAnimation : animations.outAnimation} ${
           t.transitionDuration.$textField
-        } ${t.transitionTiming.$common} 0s 1 normal forwards`,
-        // transition: `height ${t.transitionDuration.$slow}  ${t.transitionTiming.$common}`, // This is expensive but required for a smooth layout shift
+        } ${t.transitionTiming.$slowBezier} 0s 1 normal forwards`,
       });
     },
     [prefersReducedMotion],
@@ -68,7 +65,7 @@ export const OrganizationSwitcherTrigger = withAvatarShimmer(
         elementDescriptor={descriptors.organizationSwitcherTrigger}
         variant='ghost'
         colorScheme='neutral'
-        sx={[t => ({ minHeight: 0, padding: `0 ${t.space.$2} 0 0` }), sx]}
+        sx={[t => ({ minHeight: 0, padding: `0 ${t.space.$2} 0 0`, position: 'relative' }), sx]}
         ref={ref}
         {...rest}
       >
@@ -99,12 +96,15 @@ export const OrganizationSwitcherTrigger = withAvatarShimmer(
           icon={Selector}
           sx={t => ({ opacity: t.opacity.$sm, marginLeft: `${t.space.$2}` })}
         />
-
         {(notificationCountAnimated ?? 0) > 0 ? (
           <NotificationBadge
             sx={[
               t => ({
-                marginLeft: `${t.space.$2}`,
+                // marginLeft: `${t.space.$2}`,
+                position: 'absolute',
+                // top: -8,
+                right: -8,
+                border: t.borders.$normal,
               }),
               getFormTextAnimation(!!notificationCountAnimated),
             ]}
@@ -112,6 +112,22 @@ export const OrganizationSwitcherTrigger = withAvatarShimmer(
             {notificationCountAnimated}
           </NotificationBadge>
         ) : null}
+        {/*{(notificationCountAnimated ?? 0) > 0 ? (*/}
+        {/*  <NotificationBadge*/}
+        {/*    sx={[*/}
+        {/*      t => ({*/}
+        {/*        // marginLeft: `${t.space.$2}`,*/}
+        {/*        position: 'absolute',*/}
+        {/*        top: -8,*/}
+        {/*        left: -8,*/}
+        {/*        border: t.borders.$normal,*/}
+        {/*      }),*/}
+        {/*      getFormTextAnimation(!!notificationCountAnimated),*/}
+        {/*    ]}*/}
+        {/*  >*/}
+        {/*    {notificationCountAnimated}*/}
+        {/*  </NotificationBadge>*/}
+        {/*) : null}*/}
       </Button>
     );
   }),
